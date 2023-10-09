@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!-- "전송" 버튼 -->
+<input type="text" id="inputPhoneNumber" placeholder="휴대폰 번호를 입력하세요">
+<button id="sendPhoneNumber">전송</button><br><br>
+
+<!-- "인증번호 확인" 버튼 -->
+<input type="text" id="inputCertifiedNumber" placeholder="인증번호를 입력하세요">
+<button id="checkBtn">인증번호 확인</button>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<script>
+    $('#sendPhoneNumber').click(function(){
+        let phoneNumber = $('#inputPhoneNumber').val();
+        Swal.fire('인증번호 발송 완료!')
+
+
+        $.ajax({
+            type: "GET",
+            url: "/check/sendSMS",
+            data: {
+                "phoneNumber" : phoneNumber
+            },
+            success: function(res){
+                $('#checkBtn').click(function(){
+                    if($.trim(res) ==$('#inputCertifiedNumber').val()){
+                        Swal.fire(
+                            '인증성공!',
+                            '휴대폰 인증이 정상적으로 완료되었습니다.',
+                            'success'
+                        )
+
+                        $.ajax({
+                            type: "GET",
+                            url: "/update/phone",
+                            data: {
+                                "phoneNumber" : $('#inputPhoneNumber').val()
+                            }
+                        })
+                        document.location.href="/home";
+                    }else{
+                        Swal.fire({
+                            icon: 'error',
+                            title: '인증오류',
+                            text: '인증번호가 올바르지 않습니다!',
+                            footer: '<a href="/home">다음에 인증하기</a>'
+                        })
+                    }
+                })
+
+
+            }
+        })
+    });
+</script>
+
+</body>
+</html>
