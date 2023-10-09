@@ -43,7 +43,7 @@ spring:
   jpa:
     open-in-view: true
     hibernate:
-      ddl-auto: create #update로 바꾸면 값이 보관이 됨, 사라지지 않음
+      ddl-auto: create
       naming:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
     show-sql: true
